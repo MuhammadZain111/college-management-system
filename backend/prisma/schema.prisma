@@ -1,0 +1,193 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CEO
+  REGISTRAR
+  ACCOUNTANT
+  TEACHER
+  STUDENT
+}
+
+enum SubmissionStatus {
+  PENDING
+  SUBMITTED
+  LATE
+  GRADED
+}
+
+enum FeeStatus {
+  UNPAID
+  PARTIAL
+  PAID
+  OVERDUE
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+}
+
+enum NoticeAudience {
+  ALL
+  TEACHERS
+  STUDENTS
+}
+
+model User {
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  password      String
+  role          Role
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  createdById   String?
+  createdBy     User?    @relation("CreatedAccounts", fields: [createdById], references: [id])
+  createdUsers  User[]   @relation("CreatedAccounts")
+
+  // Role-specific profiles
+  teacherProfile Teacher?
+  studentProfile Student?
+
+  noticesPosted  Notice[]
+}
+
+model Department {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  classes   Class[]
+  createdAt DateTime @default(now())
+}
+
+model Class {
+  id           String       @id @default(uuid())
+  name         String       // e.g. "BA-LLB Sem 1 - Section A"
+  departmentId String
+  department   Department   @relation(fields: [departmentId], references: [id])
+  subjects     Subject[]
+  students     Student[]
+  createdAt    DateTime     @default(now())
+
+  @@unique([name, departmentId])
+}
+
+model Subject {
+  id          String        @id @default(uuid())
+  name        String
+  classId     String
+  class       Class         @relation(fields: [classId], references: [id])
+  teacherId   String?
+  teacher     Teacher?      @relation(fields: [teacherId], references: [id])
+  attendances Attendance[]
+  assignments Assignment[]
+  results     Result[]
+
+  @@unique([name, classId])
+}
+
+model Teacher {
+  id        String    @id @default(uuid())
+  userId    String    @unique
+  user      User      @relation(fields: [userId], references: [id])
+  subjects  Subject[]
+}
+
+model Student {
+  id           String        @id @default(uuid())
+  userId       String        @unique
+  user         User          @relation(fields: [userId], references: [id])
+  rollNumber   String        @unique
+  classId      String?
+  class        Class?        @relation(fields: [classId], references: [id])
+  attendances  Attendance[]
+  submissions  Submission[]
+  feeSlips     FeeSlip[]
+  results      Result[]
+}
+
+model Attendance {
+  id        String            @id @default(uuid())
+  date      DateTime          @db.Date
+  status    AttendanceStatus
+  subjectId String
+  subject   Subject           @relation(fields: [subjectId], references: [id])
+  studentId String
+  student   Student           @relation(fields: [studentId], references: [id])
+  markedAt  DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  @@unique([date, subjectId, studentId])
+}
+
+model Assignment {
+  id          String       @id @default(uuid())
+  title       String
+  description String
+  deadline    DateTime
+  maxMarks    Int
+  fileUrl     String?
+  subjectId   String
+  subject     Subject      @relation(fields: [subjectId], references: [id])
+  createdAt   DateTime     @default(now())
+  submissions Submission[]
+}
+
+model Submission {
+  id           String           @id @default(uuid())
+  assignmentId String
+  assignment   Assignment       @relation(fields: [assignmentId], references: [id])
+  studentId    String
+  student      Student          @relation(fields: [studentId], references: [id])
+  fileUrl      String?
+  status       SubmissionStatus @default(PENDING)
+  submittedAt  DateTime?
+  marksObtained Int?
+  feedback     String?
+
+  @@unique([assignmentId, studentId])
+}
+
+model FeeSlip {
+  id          String    @id @default(uuid())
+  studentId   String
+  student     Student   @relation(fields: [studentId], references: [id])
+  amount      Decimal   @db.Decimal(10, 2)
+  dueDate     DateTime
+  status      FeeStatus @default(UNPAID)
+  paidAt      DateTime?
+  month       String    // e.g. "2026-08"
+  createdAt   DateTime  @default(now())
+}
+
+model Result {
+  id            String   @id @default(uuid())
+  studentId     String
+  student       Student  @relation(fields: [studentId], references: [id])
+  subjectId     String
+  subject       Subject  @relation(fields: [subjectId], references: [id])
+  examType      String   // "Quiz", "Midterm", "Final"
+  marksObtained Decimal  @db.Decimal(6, 2)
+  totalMarks    Decimal  @db.Decimal(6, 2)
+  createdAt     DateTime @default(now())
+
+  @@unique([studentId, subjectId, examType])
+}
+
+model Notice {
+  id         String         @id @default(uuid())
+  title      String
+  message    String
+  audience   NoticeAudience @default(ALL)
+  postedById String
+  postedBy   User           @relation(fields: [postedById], references: [id])
+  createdAt  DateTime       @default(now())
+}
