@@ -6,7 +6,13 @@ export default function Accounts() {
   const [role, setRole] = useState("STUDENT");
   const [users, setUsers] = useState([]);
   const [classes, setClasses] = useState([]);
-  const [form, setForm] = useState({ name: "", email: "", password: "", rollNumber: "", classId: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    rollNumber: "",
+    classId: "",
+  });
   const [creating, setCreating] = useState(false);
 
   function load() {
@@ -21,9 +27,16 @@ export default function Accounts() {
     e.preventDefault();
     setCreating(true);
     try {
-      const endpoint = role === "STUDENT" ? "/users/students" : "/users/teachers";
+      const endpoint =
+        role === "STUDENT" ? "/users/students" : "/users/teachers";
       await api.post(endpoint, form);
-      setForm({ name: "", email: "", password: "", rollNumber: "", classId: "" });
+      setForm({
+        name: "",
+        email: "",
+        password: "",
+        rollNumber: "",
+        classId: "",
+      });
       load();
     } finally {
       setCreating(false);
@@ -42,45 +55,91 @@ export default function Accounts() {
         subtitle="Create and manage Teacher and Student accounts."
         action={
           <div className="flex gap-2">
-            <button onClick={() => setRole("STUDENT")} className={`text-sm px-4 py-2 rounded-sm ${role === "STUDENT" ? "bg-ink text-paper" : "border border-line text-slate"}`}>Students</button>
-            <button onClick={() => setRole("TEACHER")} className={`text-sm px-4 py-2 rounded-sm ${role === "TEACHER" ? "bg-ink text-paper" : "border border-line text-slate"}`}>Teachers</button>
+            <button
+              onClick={() => setRole("STUDENT")}
+              className={`text-sm px-4 py-2 rounded-sm ${role === "STUDENT" ? "bg-ink text-paper" : "border border-line text-slate"}`}
+            >
+              Students
+            </button>
+            <button
+              onClick={() => setRole("TEACHER")}
+              className={`text-sm px-4 py-2 rounded-sm ${role === "TEACHER" ? "bg-ink text-paper" : "border border-line text-slate"}`}
+            >
+              Teachers
+            </button>
           </div>
         }
       />
 
-      <form onSubmit={handleCreate} className="card mb-8 grid md:grid-cols-2 gap-4">
+      <form
+        onSubmit={handleCreate}
+        className="card mb-8 grid md:grid-cols-2 gap-4"
+      >
         <h3 className="font-display text-base text-ink md:col-span-2">
           New {role === "STUDENT" ? "Student" : "Teacher"} Account
         </h3>
         <div>
           <label className="label">Full name</label>
-          <input className="input" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+          <input
+            className="input"
+            required
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+          />
         </div>
         <div>
           <label className="label">Email</label>
-          <input type="email" className="input" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+          <input
+            type="email"
+            className="input"
+            required
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+          />
         </div>
         <div>
           <label className="label">Temporary password</label>
-          <input className="input" required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
+          <input
+            className="input"
+            required
+            value={form.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+          />
         </div>
         {role === "STUDENT" && (
           <>
             <div>
               <label className="label">Roll number</label>
-              <input className="input" required value={form.rollNumber} onChange={(e) => setForm({ ...form, rollNumber: e.target.value })} />
+              <input
+                className="input"
+                required
+                value={form.rollNumber}
+                onChange={(e) =>
+                  setForm({ ...form, rollNumber: e.target.value })
+                }
+              />
             </div>
             <div>
               <label className="label">Class / Section</label>
-              <select className="input" value={form.classId} onChange={(e) => setForm({ ...form, classId: e.target.value })}>
+              <select
+                className="input"
+                value={form.classId}
+                onChange={(e) => setForm({ ...form, classId: e.target.value })}
+              >
                 <option value="">Unassigned</option>
-                {classes.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+                {classes.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
               </select>
             </div>
           </>
         )}
         <div className="md:col-span-2">
-          <button className="btn-primary" disabled={creating}>{creating ? "Creating…" : "Create Account"}</button>
+          <button className="btn-primary" disabled={creating}>
+            {creating ? "Creating…" : "Create Account"}
+          </button>
         </div>
       </form>
 
@@ -104,11 +163,26 @@ export default function Accounts() {
                 <tr key={u.id} className="border-b border-line last:border-0">
                   <td className="py-3 pr-4">{u.name}</td>
                   <td className="py-3 pr-4">{u.email}</td>
-                  {role === "STUDENT" && <td className="py-3 pr-4">{u.studentProfile?.rollNumber}</td>}
-                  {role === "STUDENT" && <td className="py-3 pr-4">{u.studentProfile?.class?.name || "—"}</td>}
-                  <td className="py-3 pr-4"><Badge tone={u.isActive ? "success" : "danger"}>{u.isActive ? "Active" : "Inactive"}</Badge></td>
+                  {role === "STUDENT" && (
+                    <td className="py-3 pr-4">
+                      {u.studentProfile?.rollNumber}
+                    </td>
+                  )}
+                  {role === "STUDENT" && (
+                    <td className="py-3 pr-4">
+                      {u.studentProfile?.class?.name || "—"}
+                    </td>
+                  )}
+                  <td className="py-3 pr-4">
+                    <Badge tone={u.isActive ? "success" : "danger"}>
+                      {u.isActive ? "Active" : "Inactive"}
+                    </Badge>
+                  </td>
                   <td className="py-3">
-                    <button onClick={() => toggleStatus(u.id, u.isActive)} className="text-xs text-brass hover:text-ink font-medium">
+                    <button
+                      onClick={() => toggleStatus(u.id, u.isActive)}
+                      className="text-xs text-brass hover:text-ink font-medium"
+                    >
                       {u.isActive ? "Deactivate" : "Activate"}
                     </button>
                   </td>

@@ -8,12 +8,18 @@ function StudentResultsView() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get("/results/me").then(({ data }) => setResults(data)).finally(() => setLoading(false));
+    api
+      .get("/results/me")
+      .then(({ data }) => setResults(data))
+      .finally(() => setLoading(false));
   }, []);
 
   return (
     <div>
-      <PageHeader title="My Results" subtitle="Marks entered by your subject teachers." />
+      <PageHeader
+        title="My Results"
+        subtitle="Marks entered by your subject teachers."
+      />
       {loading ? (
         <div className="text-sm text-slate">Loading…</div>
       ) : !results.length ? (
@@ -33,7 +39,9 @@ function StudentResultsView() {
                 <tr key={r.id} className="border-b border-line last:border-0">
                   <td className="py-3 pr-4">{r.subject.name}</td>
                   <td className="py-3 pr-4">{r.examType}</td>
-                  <td className="py-3">{Number(r.marksObtained)} / {Number(r.totalMarks)}</td>
+                  <td className="py-3">
+                    {Number(r.marksObtained)} / {Number(r.totalMarks)}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -81,8 +89,8 @@ function TeacherResultsView() {
                 marksObtained: Number(marks[s.id]),
                 totalMarks: Number(form.totalMarks),
               })
-            : null
-        )
+            : null,
+        ),
       );
     } finally {
       setSaving(false);
@@ -91,23 +99,47 @@ function TeacherResultsView() {
 
   return (
     <div>
-      <PageHeader title="Enter Results" subtitle="Marks are simple per-exam entries, not a full transcript." />
+      <PageHeader
+        title="Enter Results"
+        subtitle="Marks are simple per-exam entries, not a full transcript."
+      />
       <div className="card mb-6 flex flex-wrap gap-4 items-end">
         <div>
           <label className="label">Subject</label>
-          <select className="input" value={subjectId} onChange={(e) => setSubjectId(e.target.value)}>
-            {subjects.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
+          <select
+            className="input"
+            value={subjectId}
+            onChange={(e) => setSubjectId(e.target.value)}
+          >
+            {subjects.map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.name}
+              </option>
+            ))}
           </select>
         </div>
         <div>
           <label className="label">Exam type</label>
-          <input className="input" value={form.examType} onChange={(e) => setForm({ ...form, examType: e.target.value })} />
+          <input
+            className="input"
+            value={form.examType}
+            onChange={(e) => setForm({ ...form, examType: e.target.value })}
+          />
         </div>
         <div>
           <label className="label">Total marks</label>
-          <input type="number" className="input w-24" value={form.totalMarks} onChange={(e) => setForm({ ...form, totalMarks: e.target.value })} />
+          <input
+            type="number"
+            className="input w-24"
+            value={form.totalMarks}
+            onChange={(e) => setForm({ ...form, totalMarks: e.target.value })}
+          />
         </div>
-        <button onClick={handleSave} disabled={saving || !students.length} className="btn-primary">
+        <button
+          onClick={handleSave}
+          disabled={saving || !students.length}
+          className="btn-primary"
+        >
           {saving ? "Saving…" : "Save Marks"}
         </button>
       </div>
@@ -136,5 +168,9 @@ function TeacherResultsView() {
 
 export default function Results() {
   const { user } = useAuth();
-  return user.role === "STUDENT" ? <StudentResultsView /> : <TeacherResultsView />;
+  return user.role === "STUDENT" ? (
+    <StudentResultsView />
+  ) : (
+    <TeacherResultsView />
+  );
 }

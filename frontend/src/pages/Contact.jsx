@@ -15,8 +15,12 @@ export default function Contact() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-16">
       <div>
-        <p className="text-xs uppercase tracking-[0.25em] text-brass mb-4">Get in Touch</p>
-        <h1 className="font-display text-4xl text-ink mb-6">Contact the college office</h1>
+        <p className="text-xs uppercase tracking-[0.25em] text-brass mb-4">
+          Get in Touch
+        </p>
+        <h1 className="font-display text-4xl text-ink mb-6">
+          Contact the college office
+        </h1>
         <p className="text-slate leading-relaxed mb-10">
           For login issues, account requests, or general enquiries, reach the
           Registrar's office directly. Students should first check with their
@@ -26,11 +30,15 @@ export default function Contact() {
         <dl className="space-y-6 text-sm">
           <div>
             <dt className="stat-label mb-1">Address</dt>
-            <dd className="text-charcoal">Muhammadan Law College, Lahore, Punjab, Pakistan</dd>
+            <dd className="text-charcoal">
+              Muhammadan Law College, Lahore, Punjab, Pakistan
+            </dd>
           </div>
           <div>
             <dt className="stat-label mb-1">Registrar's Office</dt>
-            <dd className="text-charcoal">registrar@muhammadanlaw.edu.pk · +92 42 XXX XXXX</dd>
+            <dd className="text-charcoal">
+              registrar@muhammadanlaw.edu.pk · +92 42 XXX XXXX
+            </dd>
           </div>
           <div>
             <dt className="stat-label mb-1">Accounts Office</dt>
@@ -38,7 +46,9 @@ export default function Contact() {
           </div>
           <div>
             <dt className="stat-label mb-1">Office Hours</dt>
-            <dd className="text-charcoal">Monday – Saturday, 9:00 AM – 4:00 PM</dd>
+            <dd className="text-charcoal">
+              Monday – Saturday, 9:00 AM – 4:00 PM
+            </dd>
           </div>
         </dl>
       </div>
@@ -46,8 +56,12 @@ export default function Contact() {
       <div className="card">
         {sent ? (
           <div className="py-10 text-center">
-            <h3 className="font-display text-xl text-ink mb-2">Message received</h3>
-            <p className="text-sm text-slate">The office will get back to you within one working day.</p>
+            <h3 className="font-display text-xl text-ink mb-2">
+              Message received
+            </h3>
+            <p className="text-sm text-slate">
+              The office will get back to you within one working day.
+            </p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -79,7 +93,9 @@ export default function Contact() {
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
               />
             </div>
-            <button type="submit" className="btn-primary w-full">Send Message</button>
+            <button type="submit" className="btn-primary w-full">
+              Send Message
+            </button>
           </form>
         )}
       </div>

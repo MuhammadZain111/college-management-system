@@ -13,19 +13,33 @@ export default function PublicNavbar() {
         <Link to="/" className="flex items-center gap-3">
           <Seal size={36} />
           <div className="leading-tight">
-            <div className="font-display text-lg text-ink">Muhammadan Law College</div>
-            <div className="text-[11px] uppercase tracking-[0.2em] text-slate">Student Portal</div>
+            <div className="font-display text-lg text-ink">
+              Muhammadan Law College
+            </div>
+            <div className="text-[11px] uppercase tracking-[0.2em] text-slate">
+              Student Portal
+            </div>
           </div>
         </Link>
         <nav className="hidden md:flex items-center gap-8">
-          <NavLink to="/" end className={navLink}>Home</NavLink>
-          <NavLink to="/about" className={navLink}>About</NavLink>
-          <NavLink to="/contact" className={navLink}>Contact</NavLink>
+          <NavLink to="/" end className={navLink}>
+            Home
+          </NavLink>
+          <NavLink to="/about" className={navLink}>
+            About
+          </NavLink>
+          <NavLink to="/contact" className={navLink}>
+            Contact
+          </NavLink>
         </nav>
         {user ? (
-          <Link to="/dashboard" className="btn-primary text-sm">Go to Dashboard</Link>
+          <Link to="/dashboard" className="btn-primary text-sm">
+            Go to Dashboard
+          </Link>
         ) : (
-          <Link to="/login" className="btn-primary text-sm">Portal Login</Link>
+          <Link to="/login" className="btn-primary text-sm">
+            Portal Login
+          </Link>
         )}
       </div>
     </header>

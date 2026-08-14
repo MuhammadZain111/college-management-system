@@ -19,7 +19,10 @@ export default function Login() {
       await login(email, password);
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Unable to log in. Check your credentials.");
+      setError(
+        err.response?.data?.message ||
+          "Unable to log in. Check your credentials.",
+      );
     } finally {
       setLoading(false);
     }
@@ -30,8 +33,12 @@ export default function Login() {
       <div className="w-full max-w-md">
         <div className="flex flex-col items-center mb-8">
           <Seal size={56} />
-          <h1 className="font-display text-2xl text-ink mt-4">Portal Sign In</h1>
-          <p className="text-sm text-slate mt-1">One login form, routed to your role's dashboard.</p>
+          <h1 className="font-display text-2xl text-ink mt-4">
+            Portal Sign In
+          </h1>
+          <p className="text-sm text-slate mt-1">
+            One login form, routed to your role's dashboard.
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="card space-y-5">
@@ -42,7 +49,13 @@ export default function Login() {
           )}
           <div>
             <label className="label">Email address</label>
-            <input type="email" required className="input" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input
+              type="email"
+              required
+              className="input"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
           <div>
             <label className="label">Password</label>
@@ -54,13 +67,19 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button type="submit" disabled={loading} className="btn-primary w-full">
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-primary w-full"
+          >
             {loading ? "Signing in…" : "Sign In"}
           </button>
         </form>
 
         <p className="text-center text-xs text-slate mt-6">
-          <Link to="/" className="hover:text-ink">← Back to college home</Link>
+          <Link to="/" className="hover:text-ink">
+            ← Back to college home
+          </Link>
         </p>
       </div>
     </div>

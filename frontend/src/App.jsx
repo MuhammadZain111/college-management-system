@@ -37,12 +37,54 @@ export default function App() {
       >
         <Route index element={<Overview />} />
         <Route path="notices" element={<Notices />} />
-        <Route path="fees" element={<ProtectedRoute allow={["ACCOUNTANT", "STUDENT", "CEO"]}><Fees /></ProtectedRoute>} />
-        <Route path="attendance" element={<ProtectedRoute allow={["TEACHER", "STUDENT"]}><Attendance /></ProtectedRoute>} />
-        <Route path="assignments" element={<ProtectedRoute allow={["TEACHER", "STUDENT"]}><Assignments /></ProtectedRoute>} />
-        <Route path="results" element={<ProtectedRoute allow={["TEACHER", "STUDENT"]}><Results /></ProtectedRoute>} />
-        <Route path="accounts" element={<ProtectedRoute allow={["REGISTRAR"]}><Accounts /></ProtectedRoute>} />
-        <Route path="academics" element={<ProtectedRoute allow={["REGISTRAR"]}><Academics /></ProtectedRoute>} />
+        <Route
+          path="fees"
+          element={
+            <ProtectedRoute allow={["ACCOUNTANT", "STUDENT", "CEO"]}>
+              <Fees />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="attendance"
+          element={
+            <ProtectedRoute allow={["TEACHER", "STUDENT"]}>
+              <Attendance />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="assignments"
+          element={
+            <ProtectedRoute allow={["TEACHER", "STUDENT"]}>
+              <Assignments />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="results"
+          element={
+            <ProtectedRoute allow={["TEACHER", "STUDENT"]}>
+              <Results />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="accounts"
+          element={
+            <ProtectedRoute allow={["REGISTRAR"]}>
+              <Accounts />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="academics"
+          element={
+            <ProtectedRoute allow={["REGISTRAR"]}>
+              <Academics />
+            </ProtectedRoute>
+          }
+        />
       </Route>
     </Routes>
   );

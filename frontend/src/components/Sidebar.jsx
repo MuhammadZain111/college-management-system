@@ -53,7 +53,9 @@ export default function Sidebar() {
         <Seal size={32} />
         <div className="leading-tight">
           <div className="font-display text-sm">MLC Portal</div>
-          <div className="text-[11px] text-brass-light uppercase tracking-widest">{ROLE_LABELS[user.role]}</div>
+          <div className="text-[11px] text-brass-light uppercase tracking-widest">
+            {ROLE_LABELS[user.role]}
+          </div>
         </div>
       </div>
 
@@ -65,7 +67,9 @@ export default function Sidebar() {
             end={item.to === "/dashboard"}
             className={({ isActive }) =>
               `block px-4 py-2.5 rounded-sm text-sm transition-colors ${
-                isActive ? "bg-brass text-ink-dark font-medium" : "text-paper/80 hover:bg-white/10"
+                isActive
+                  ? "bg-brass text-ink-dark font-medium"
+                  : "text-paper/80 hover:bg-white/10"
               }`
             }
           >
@@ -77,7 +81,10 @@ export default function Sidebar() {
       <div className="px-6 py-5 border-t border-white/10">
         <p className="text-sm truncate">{user.name}</p>
         <p className="text-xs text-paper/50 truncate mb-3">{user.email}</p>
-        <button onClick={logout} className="text-xs text-brass-light hover:text-brass transition-colors">
+        <button
+          onClick={logout}
+          className="text-xs text-brass-light hover:text-brass transition-colors"
+        >
           Sign out
         </button>
       </div>

@@ -11,7 +11,12 @@ export function PageHeader({ title, subtitle, action }) {
 }
 
 export function StatCard({ label, value, tone = "default" }) {
-  const toneClass = tone === "danger" ? "text-danger" : tone === "success" ? "text-success" : "text-ink";
+  const toneClass =
+    tone === "danger"
+      ? "text-danger"
+      : tone === "success"
+        ? "text-success"
+        : "text-ink";
   return (
     <div className="card">
       <div className={`font-display text-3xl ${toneClass}`}>{value}</div>
@@ -21,7 +26,9 @@ export function StatCard({ label, value, tone = "default" }) {
 }
 
 export function EmptyState({ message }) {
-  return <div className="card text-center text-sm text-slate py-12">{message}</div>;
+  return (
+    <div className="card text-center text-sm text-slate py-12">{message}</div>
+  );
 }
 
 export function Badge({ children, tone = "default" }) {
@@ -31,5 +38,11 @@ export function Badge({ children, tone = "default" }) {
     danger: "bg-danger/10 text-danger",
     warn: "bg-warn/10 text-warn",
   };
-  return <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${tones[tone]}`}>{children}</span>;
+  return (
+    <span
+      className={`text-xs px-2.5 py-1 rounded-full font-medium ${tones[tone]}`}
+    >
+      {children}
+    </span>
+  );
 }

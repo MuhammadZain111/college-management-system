@@ -8,12 +8,18 @@ function StudentAttendanceView() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get("/attendance/me").then(({ data }) => setData(data)).finally(() => setLoading(false));
+    api
+      .get("/attendance/me")
+      .then(({ data }) => setData(data))
+      .finally(() => setLoading(false));
   }, []);
 
   return (
     <div>
-      <PageHeader title="My Attendance" subtitle={data ? `College threshold: ${data.threshold}%` : ""} />
+      <PageHeader
+        title="My Attendance"
+        subtitle={data ? `College threshold: ${data.threshold}%` : ""}
+      />
       {loading ? (
         <div className="text-sm text-slate">Loading…</div>
       ) : !data?.summary.length ? (
@@ -24,10 +30,18 @@ function StudentAttendanceView() {
             <div key={s.subject} className="card">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-display text-base text-ink">{s.subject}</h3>
-                {s.belowThreshold && <Badge tone="danger">Below threshold</Badge>}
+                {s.belowThreshold && (
+                  <Badge tone="danger">Below threshold</Badge>
+                )}
               </div>
-              <div className={`stat-value ${s.belowThreshold ? "text-danger" : ""}`}>{s.percentage}%</div>
-              <p className="text-xs text-slate mt-1">{s.present} / {s.total} classes attended</p>
+              <div
+                className={`stat-value ${s.belowThreshold ? "text-danger" : ""}`}
+              >
+                {s.percentage}%
+              </div>
+              <p className="text-xs text-slate mt-1">
+                {s.present} / {s.total} classes attended
+              </p>
             </div>
           ))}
         </div>
@@ -56,7 +70,13 @@ function TeacherAttendanceView() {
     // Roster comes from the class's enrolled students; simplified fetch via academics/classes
     api.get("/academics/classes").then(({ data }) => {
       const cls = data.find((c) => c.id === subject?.classId);
-      setRecords((cls?.students || []).map((st) => ({ studentId: st.id, name: st.rollNumber, status: "PRESENT" })));
+      setRecords(
+        (cls?.students || []).map((st) => ({
+          studentId: st.id,
+          name: st.rollNumber,
+          status: "PRESENT",
+        })),
+      );
     });
   }, [subjectId, subjects]);
 
@@ -66,7 +86,10 @@ function TeacherAttendanceView() {
       await api.post("/attendance/mark", {
         subjectId,
         date,
-        records: records.map((r) => ({ studentId: r.studentId, status: r.status })),
+        records: records.map((r) => ({
+          studentId: r.studentId,
+          status: r.status,
+        })),
       });
     } finally {
       setSaving(false);
@@ -75,21 +98,39 @@ function TeacherAttendanceView() {
 
   return (
     <div>
-      <PageHeader title="Mark Attendance" subtitle="Editable same-day only, per college policy." />
+      <PageHeader
+        title="Mark Attendance"
+        subtitle="Editable same-day only, per college policy."
+      />
       <div className="card mb-6 flex flex-wrap gap-4 items-end">
         <div>
           <label className="label">Subject</label>
-          <select className="input" value={subjectId} onChange={(e) => setSubjectId(e.target.value)}>
+          <select
+            className="input"
+            value={subjectId}
+            onChange={(e) => setSubjectId(e.target.value)}
+          >
             {subjects.map((s) => (
-              <option key={s.id} value={s.id}>{s.name} — {s.class?.name}</option>
+              <option key={s.id} value={s.id}>
+                {s.name} — {s.class?.name}
+              </option>
             ))}
           </select>
         </div>
         <div>
           <label className="label">Date</label>
-          <input type="date" className="input" value={date} onChange={(e) => setDate(e.target.value)} />
+          <input
+            type="date"
+            className="input"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
         </div>
-        <button onClick={handleSave} disabled={saving || !records.length} className="btn-primary">
+        <button
+          onClick={handleSave}
+          disabled={saving || !records.length}
+          className="btn-primary"
+        >
           {saving ? "Saving…" : "Save Attendance"}
         </button>
       </div>
@@ -99,7 +140,10 @@ function TeacherAttendanceView() {
       ) : (
         <div className="card divide-y divide-line">
           {records.map((r, idx) => (
-            <div key={r.studentId} className="flex items-center justify-between py-3">
+            <div
+              key={r.studentId}
+              className="flex items-center justify-between py-3"
+            >
               <span className="text-sm">Roll No. {r.name}</span>
               <select
                 className="input w-auto"
@@ -124,5 +168,9 @@ function TeacherAttendanceView() {
 
 export default function Attendance() {
   const { user } = useAuth();
-  return user.role === "STUDENT" ? <StudentAttendanceView /> : <TeacherAttendanceView />;
+  return user.role === "STUDENT" ? (
+    <StudentAttendanceView />
+  ) : (
+    <TeacherAttendanceView />
+  );
 }

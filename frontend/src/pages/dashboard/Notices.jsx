@@ -36,7 +36,10 @@ export default function Notices() {
 
   return (
     <div>
-      <PageHeader title="Notice Board" subtitle="College-wide and role-specific announcements." />
+      <PageHeader
+        title="Notice Board"
+        subtitle="College-wide and role-specific announcements."
+      />
 
       {CAN_POST.includes(user.role) && (
         <form onSubmit={handlePost} className="card mb-8 space-y-4">
@@ -65,7 +68,9 @@ export default function Notices() {
               <option value="TEACHERS">Teachers only</option>
               <option value="STUDENTS">Students only</option>
             </select>
-            <button className="btn-primary" disabled={posting}>{posting ? "Posting…" : "Post Notice"}</button>
+            <button className="btn-primary" disabled={posting}>
+              {posting ? "Posting…" : "Post Notice"}
+            </button>
           </div>
         </form>
       )}
@@ -80,9 +85,13 @@ export default function Notices() {
             <div key={n.id} className="card">
               <div className="flex items-start justify-between mb-2">
                 <h3 className="font-display text-base text-ink">{n.title}</h3>
-                <span className="text-xs text-slate">{new Date(n.createdAt).toLocaleDateString()}</span>
+                <span className="text-xs text-slate">
+                  {new Date(n.createdAt).toLocaleDateString()}
+                </span>
               </div>
-              <p className="text-sm text-charcoal leading-relaxed mb-2">{n.message}</p>
+              <p className="text-sm text-charcoal leading-relaxed mb-2">
+                {n.message}
+              </p>
               <p className="text-xs text-slate">— {n.postedBy?.name}</p>
             </div>
           ))}
